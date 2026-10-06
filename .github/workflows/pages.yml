@@ -46,6 +46,11 @@ jobs:
 
       - name: Set up GitHub Pages
         uses: actions/configure-pages@v5
+        with:
+          # Create/enable the Pages site (build_type = GitHub Actions) on the
+          # first run instead of requiring a manual settings change.
+          # On a free account this still requires a PUBLIC repository.
+          enablement: true
 
       - name: Upload site artifact
         uses: actions/upload-pages-artifact@v3
