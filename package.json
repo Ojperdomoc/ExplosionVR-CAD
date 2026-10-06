@@ -1,0 +1,25 @@
+{
+  "name": "parts-explorer",
+  "version": "1.0.0",
+  "main": "index.js",
+  "directories": {
+    "doc": "docs",
+    "test": "tests"
+  },
+  "scripts": {
+    "test": "node tests/unit.test.mjs && node tests/browser.test.mjs",
+    "test:unit": "node tests/unit.test.mjs",
+    "test:browser": "node tests/browser.test.mjs",
+    "start": "python3 -m http.server 8123 --bind 0.0.0.0"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "devDependencies": {
+    "@mediapipe/tasks-vision": "^1.0.1",
+    "playwright": "^1.63.0",
+    "three": "^0.186.1"
+  },
+  "type": "module"
+}
