@@ -20,8 +20,11 @@ on:
       - arena/0ef69c56-explosionvr-cad
   workflow_dispatch:
 
-# Permissions needed to deploy to GitHub Pages.
+# Permissions needed to deploy to GitHub Pages. Everything not listed here is
+# implicitly `none`, so `contents: read` is mandatory for actions/checkout —
+# on a private repo the token has no other way to read the code.
 permissions:
+  contents: read
   pages: write
   id-token: write
 
