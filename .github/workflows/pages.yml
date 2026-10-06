@@ -1,0 +1,64 @@
+# Deploy the repo root to GitHub Pages.
+#
+# There is no build step: the repository IS the site (index.html at the root,
+# native ES modules, Three.js and MediaPipe vendored under vendor/). This
+# workflow packages the checkout as a Pages artifact and deploys it.
+#
+# One-time setup is not required in the common case: actions/configure-pages
+# enables the Pages site automatically (source = "GitHub Actions") the first
+# time this workflow runs, thanks to the `pages: write` permission below.
+# NOTE: on a free GitHub account, GitHub Pages only works for PUBLIC
+# repositories — make the repo public (or upgrade the plan) first.
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches:
+      - main
+      # Session working branch — lets this fix be verified live before merge.
+      # Safe to delete this line after merging to main.
+      - arena/0ef69c56-explosionvr-cad
+  workflow_dispatch:
+
+# Permissions needed to deploy to GitHub Pages. Everything not listed here is
+# implicitly `none`, so `contents: read` is mandatory for actions/checkout —
+# on a private repo the token has no other way to read the code.
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# One deployment at a time; supersede stale in-progress runs.
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    name: Deploy static site
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up GitHub Pages
+        uses: actions/configure-pages@v5
+        with:
+          # Create/enable the Pages site (build_type = GitHub Actions) on the
+          # first run instead of requiring a manual settings change.
+          # On a free account this still requires a PUBLIC repository.
+          enablement: true
+
+      - name: Upload site artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          # Serve the repo root as-is. .nojekyll travels with the artifact,
+          # and the vendored binaries (wasm, .task model) deploy untouched.
+          path: .
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

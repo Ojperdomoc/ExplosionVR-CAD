@@ -17,6 +17,20 @@ Three hand inputs feed one pipeline:
 
 ---
 
+## Live demo (GitHub Pages)
+
+The app deploys straight from this repository to GitHub Pages:
+
+**https://ojperdomoc.github.io/ExplosionVR-CAD/**
+
+Pages is HTTPS by default, which is exactly what WebXR, webcam access, and
+`SharedArrayBuffer`-class APIs require — the headset and camera features work
+from the hosted URL just as they do locally.
+
+Deployment details are in [Deployment](#deployment) below.
+
+---
+
 ## Quick start
 
 ```bash
@@ -26,6 +40,28 @@ npm start            # static server on :8123
 
 No build step, no dependencies at runtime — the engine is vendored under
 `vendor/three/` and everything is native ES modules behind an import map.
+
+## Deployment
+
+The repo is a fully static site (`index.html` at the root, all paths
+relative), so it deploys to GitHub Pages without any build step:
+
+- **`.github/workflows/pages.yml`** builds a Pages artifact from the checkout
+  and deploys it on every push to `main` (or manually via *Actions → Deploy to
+  GitHub Pages → Run workflow*). The workflow enables the Pages site
+  automatically (source: *GitHub Actions*) on its first run — no settings
+  toggling needed. If you ever want to point Pages at the branch instead, use
+  *Settings → Pages → Source: GitHub Actions*.
+- **`.nojekyll`** marks the site as plain files so Pages never runs a Jekyll
+  build over the ~35 MB of vendored wasm/model binaries (that legacy path is
+  what usually makes "Pages is enabled but the site is blank/late").
+
+Requirements on the GitHub side:
+
+- On a **free** account, Pages only serves **public** repositories — make the
+  repo public (or upgrade to a paid plan for private-repo Pages).
+- The site lands at `https://<user>.github.io/<repo>/`; every asset reference
+  in the app is relative, so the sub-path needs no configuration.
 
 Verify:
 
