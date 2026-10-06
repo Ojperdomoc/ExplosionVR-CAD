@@ -1,0 +1,4 @@
+# Disable Jekyll processing so GitHub Pages serves this repo as-is.
+# The site is plain static files (ES modules + vendored Three.js/MediaPipe);
+# without this marker, branch-based Pages deploys run a slow, fragile Jekyll
+# build over ~35 MB of vendored binaries for no benefit.
